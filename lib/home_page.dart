@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+import 'home_page_controller.dart';
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final url = "https://animechan.vercel.app/api/random";
-  String? result;
-  Future<http.Response> getAnimeQuotes() async {
-    final response = await http.get(Uri.parse(url));
-
-    print(response.statusCode);
-    return response;
-  }
-
-  @override
-  void initState() {
-    getAnimeQuotes().then((value) {
-      result = value.body;
-      setState(() {});
-    });
-    super.initState();
-  }
-
+class HomePage extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: result == null ? CircularProgressIndicator() : Text(result!),
+        child: GetBuilder<HomePageController>(
+          init: Get.put(HomePageController()),
+          builder: (controller) {
+            return controller.anime == null
+                ? CircularProgressIndicator()
+                : ListTile(
+                    title: Text(controller.anime!.anime),
+                    subtitle: Text(controller.anime!.quote),
+                  );
+          },
+        ),
       ),
     );
   }
