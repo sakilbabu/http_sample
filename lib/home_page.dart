@@ -14,7 +14,10 @@ class HomePage extends GetView {
             return controller.anime == null
                 ? CircularProgressIndicator()
                 : ListTile(
-                    title: Text(controller.anime!.anime),
+                    title: Text(
+                      controller.anime!.anime,
+                      style: TextStyle(color: Colors.green),
+                    ),
                     subtitle: Text(controller.anime!.quote),
                   );
           },
